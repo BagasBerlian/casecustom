@@ -41,5 +41,7 @@ export function constructMetadata({
       images: [image],
       creator: "Lian-dev | @BagasBerlian",
     },
+    icons,
+    metadataBase: new URL("https://casecustom-mu.vercel.app/"),
   };
 }
