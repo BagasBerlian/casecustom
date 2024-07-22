@@ -30,12 +30,10 @@ interface DesignConfiguratorProps {
 const DesignConfigurator = ({ configId, imageUrl, imageDimensions }: DesignConfiguratorProps) => {
   const { toast } = useToast();
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { mutate: saveConfig } = useMutation({
+  const { mutate: saveConfig, isPending } = useMutation({
     mutationKey: ["save-config"],
     mutationFn: async (args: saveConfigArgs) => {
-      setIsLoading(true);
       await Promise.all([saveConfiguration(), _saveConfig(args)]);
     },
     onError: () => {
@@ -302,8 +300,9 @@ const DesignConfigurator = ({ configId, imageUrl, imageDimensions }: DesignConfi
             <div className="w-full flex gap-6 items-center">
               <p className="font-medium whitespace-nowrap">{formatPrice((BASE_PRICE + options.finish.price + options.material.price) / 100)}</p>
               <Button
-                isLoading={isLoading}
-                loadingText="Upload"
+                isLoading={isPending}
+                disabled={isPending}
+                loadingText="Saving"
                 onClick={() =>
                   saveConfig({
                     configId,
