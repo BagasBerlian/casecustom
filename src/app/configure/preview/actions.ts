@@ -4,9 +4,10 @@ import { BASE_PRICE, PRODUCT_PRICES } from "@/config/products";
 import { db } from "@/db";
 import { stripe } from "@/lib/stripe";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { KindeUser } from "@kinde-oss/kinde-auth-nextjs/types";
 import { Order } from "@prisma/client";
 
-export const createCheckoutSession = async ({ configId }: { configId: string }) => {
+export const createCheckoutSession = async ({ configId, user }: { configId: string; user: KindeUser | null }) => {
   const configuration = await db.configuration.findUnique({
     where: { id: configId },
   });
@@ -15,8 +16,8 @@ export const createCheckoutSession = async ({ configId }: { configId: string }) 
     throw new Error("No such configuration found");
   }
 
-  const { getUser } = getKindeServerSession();
-  const user = await getUser();
+  // const { getUser } = getKindeServerSession();
+  // const user = await getUser();
 
   if (!user) {
     throw new Error("You need to be logged in");
@@ -62,7 +63,7 @@ export const createCheckoutSession = async ({ configId }: { configId: string }) 
   const stripeSession = await stripe.checkout.sessions.create({
     success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${order.id}`,
     cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/configure/preview?id=${configuration.id}`,
-    payment_method_types: ["card", "grabpay"],
+    payment_method_types: ["grabpay"],
     mode: "payment",
     shipping_address_collection: { allowed_countries: ["ID", "US"] },
     metadata: {
