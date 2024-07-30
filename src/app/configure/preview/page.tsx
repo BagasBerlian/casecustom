@@ -28,7 +28,7 @@ const Page = async ({ searchParams }: PageProps) => {
     return notFound();
   }
 
-  return <DesignPreview configuration={configuration} user={user!} />;
+  return <DesignPreview configuration={configuration} />;
 };
 
 export default Page;
