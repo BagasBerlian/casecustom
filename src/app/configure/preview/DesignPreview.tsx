@@ -21,7 +21,7 @@ const DesignPreview = ({ configuration, user }: { configuration: Configuration; 
   const router = useRouter();
   const { toast } = useToast();
   const { id } = configuration;
-  // const { user } = useKindeBrowserClient();
+  const { user: kindeUser } = useKindeBrowserClient();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
   const [showConfetti, setShowConfetti] = useState(false);
@@ -55,9 +55,10 @@ const DesignPreview = ({ configuration, user }: { configuration: Configuration; 
   });
 
   const handleCheckout = () => {
-    if (user) {
+    const currentUser = user || kindeUser;
+    if (currentUser) {
       // create payment session
-      createPaymentSession({ configId: id, user });
+      createPaymentSession({ configId: id, user: currentUser });
     } else {
       // Need to login
       localStorage.setItem("configurationId", id);

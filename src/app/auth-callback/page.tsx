@@ -25,9 +25,9 @@ const Page = () => {
   if (data?.success) {
     if (configId) {
       localStorage.removeItem("configurationId");
-      router.push(`/configure/preview?id=${configId}`);
+      window.location.href = `/configure/preview?id=${configId}`;
     } else {
-      router.push("/");
+      window.location.href = "/";
     }
   }
 

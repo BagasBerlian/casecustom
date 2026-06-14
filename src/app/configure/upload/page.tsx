@@ -23,6 +23,13 @@ const Page = () => {
         router.push(`/configure/design?id=${configId}`);
       });
     },
+    onUploadError: (error) => {
+      toast({
+        title: "Upload failed",
+        description: error.message || "Something went wrong while uploading your image.",
+        variant: "destructive",
+      });
+    },
     onUploadProgress(p) {
       setUploadProgress(p);
     },
