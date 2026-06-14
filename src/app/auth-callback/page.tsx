@@ -7,13 +7,7 @@ import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 
 const Page = () => {
-  const [configId, setConfigId] = useState<string | null>(null);
   const router = useRouter();
-
-  useEffect(() => {
-    const configurationId = localStorage.getItem("configurationId");
-    if (configurationId) setConfigId(configurationId);
-  }, []);
 
   const { data } = useQuery({
     queryKey: ["auth-callback"],
@@ -23,6 +17,7 @@ const Page = () => {
   });
 
   if (data?.success) {
+    const configId = localStorage.getItem("configurationId");
     if (configId) {
       localStorage.removeItem("configurationId");
       window.location.href = `/configure/preview?id=${configId}`;
