@@ -6,7 +6,7 @@ import { db } from "@/db";
 const f = createUploadthing();
 
 export const ourFileRouter = {
-  imageUploader: f({ image: { maxFileSize: "7MB" } })
+  imageUploader: f({ image: { maxFileSize: "8MB" } })
     .input(z.object({ configId: z.string().optional() }))
     .middleware(async ({ input }) => {
       return { input };
